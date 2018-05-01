@@ -13,5 +13,12 @@ Estimation_VarCov <- function(Return,method="EWMA"){
       Sigma <- lambda * Return[t,] %*% t(Return[t,]) + (1-lambda) * Sigma
     }
   }
+  else if(method=="GARCH"){
+    
+  }
+  else if(method=="SAMPLE"){
+    
+  }
+  else{stop("invalid method in input")}
   return(Sigma)
 }# end Estimation_VarCov

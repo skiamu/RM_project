@@ -28,9 +28,18 @@ for(i in a[-1]){# extract common dates
 Price <- Intersect %>% select(Date,paste(str_replace_all(Tickers,"[^[:alnum:]]",""),".Close",sep="")) # to be changed
 # convert daily to weekly, in order to apply the function "to.weekly" we need a xls object
 Price <- xts(Price[,-1], order.by=as.Date(Price[,1])) %>% to.weekly(.,OHLC = FALSE) %>%
-  as.data.frame()
-Return <- Price[-1,] / Price[-dim(Price)[2],]-1
+  as.matrix
+
+# !!!!!!!!!!!WARNING!!!!!!!!!!!!!!!!!!
+Price <- apply(Price,2,rev) # latest quote at the top
+
+Return <- Price[-1,] / Price[-dim(Price)[1],]-1
   
+################################
+# COVARIANCE MATRIX ESTIMATION
+################################
+source("Estimation_VarCov.R")
+Sigma <- Estimation_VarCov(Return[1:100,])
 
 
 
